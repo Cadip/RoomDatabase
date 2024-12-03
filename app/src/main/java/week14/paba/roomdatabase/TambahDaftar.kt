@@ -15,8 +15,6 @@ import week14.paba.roomdatabase.database.daftarBelanjaDB
 import week14.paba.roomdatabase.helper.DateHelper.getCurrentDate
 
 class TambahDaftar : AppCompatActivity() {
-    var DB = daftarBelanjaDB.getDatabase(this)
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -27,6 +25,7 @@ class TambahDaftar : AppCompatActivity() {
             insets
         }
 
+        var DB = daftarBelanjaDB.getDatabase(this)
         var _etItem = findViewById<EditText>(R.id.etItem)
         var _etJumlah = findViewById<EditText>(R.id.etJumlah)
         var _btnTambah = findViewById<Button>(R.id.btnTambah)
@@ -40,7 +39,8 @@ class TambahDaftar : AppCompatActivity() {
                     daftarBelanja(
                         tanggal = tanggal,
                         item = _etItem.text.toString(),
-                        jumlah = _etJumlah.text.toString()
+                        jumlah = _etJumlah.text.toString(),
+                        status = 0
                     )
                 )
             }

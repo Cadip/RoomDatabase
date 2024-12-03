@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "week14.paba.roomdatabase"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "week14.paba.roomdatabase"
