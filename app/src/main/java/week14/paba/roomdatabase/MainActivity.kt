@@ -14,6 +14,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.withContext
 import week14.paba.roomdatabase.database.daftarBelanja
 import week14.paba.roomdatabase.database.daftarBelanjaDB
 
@@ -43,6 +44,20 @@ class MainActivity : AppCompatActivity() {
         var _rvNotes = findViewById<RecyclerView>(R.id.rvNotes)
         _rvNotes.layoutManager = LinearLayoutManager(this)
         _rvNotes.adapter = adapterDaftar
+
+        adapterDaftar.setOnItemClickCallback(
+            object : adapterDaftar.OnItemClickCallback {
+                override fun delData(dtBelanja: daftarBelanja) {
+                    CoroutineScope(Dispatchers.IO).async {
+                        DB.fundaftarBelanjaDAO().delete(dtBelanja)
+                        val daftar = DB.fundaftarBelanjaDAO().selectAll()
+                        withContext(Dispatchers.Main) {
+                            adapterDaftar.isiData(daftar)
+                        }
+                    }
+                }
+            }
+        )
     }
 
     override fun onStart() {
