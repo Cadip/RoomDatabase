@@ -17,9 +17,13 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 import week14.paba.roomdatabase.database.daftarBelanja
 import week14.paba.roomdatabase.database.daftarBelanjaDB
+import week14.paba.roomdatabase.database.historyBarang
+import week14.paba.roomdatabase.database.historyBarangDB
+import week14.paba.roomdatabase.database.historyBarangDAO
 
 class MainActivity : AppCompatActivity() {
     private lateinit var DB : daftarBelanjaDB
+    private lateinit var DBhistoryBarang : historyBarangDB
     private lateinit var adapterDaftar: adapterDaftar
     private var arDaftar: MutableList<daftarBelanja> = mutableListOf()
 
@@ -34,6 +38,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         DB = daftarBelanjaDB.getDatabase(this)
+        DBhistoryBarang = historyBarangDB.getDatabase(this)
         adapterDaftar = adapterDaftar(arDaftar)
 
         var _fabAdd = findViewById<FloatingActionButton>(R.id.fabAdd)
@@ -55,6 +60,33 @@ class MainActivity : AppCompatActivity() {
                             adapterDaftar.isiData(daftar)
                         }
                     }
+                }
+
+                override fun selesaiData(dtBelanja: daftarBelanja) {
+                    CoroutineScope(Dispatchers.IO).async {
+                        // Create an object for the historyBarang table
+                        val history = historyBarang(
+                            tanggal = dtBelanja.tanggal,
+                            item = dtBelanja.item,
+                            jumlah = dtBelanja.jumlah,
+                            status = 1
+                        )
+
+                        // Insert into the historyBarang table
+                        DBhistoryBarang.funhistoryBarangDAO().insert(history)
+
+                        // Delete the item from the daftarBelanja table
+                        DB.fundaftarBelanjaDAO().delete(dtBelanja)
+
+                        // Update the RecyclerView UI with the new data
+                        val daftar = DB.fundaftarBelanjaDAO().selectAll()
+
+                        withContext(Dispatchers.Main) {
+                            // Update the adapter with the latest data
+                            adapterDaftar.isiData(daftar)
+                        }
+                    }
+
                 }
             }
         )

@@ -1,6 +1,7 @@
 package week14.paba.roomdatabase
 
 import android.content.Intent
+import android.media.Image
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,7 @@ class adapterDaftar (private val daftarBelanja : MutableList<daftarBelanja>):
 
     interface OnItemClickCallback {
         fun delData(dtBelanja: daftarBelanja)
+        fun selesaiData(dtBelanja: daftarBelanja)
     }
 
     fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback){
@@ -51,6 +53,11 @@ class adapterDaftar (private val daftarBelanja : MutableList<daftarBelanja>):
         holder._btnHapus.setOnClickListener {
             onItemClickCallback.delData(daftar)
         }
+
+        holder._btnSelesai.setOnClickListener{
+            onItemClickCallback.selesaiData(daftar)
+        }
+
     }
 
     fun isiData(daftar: List<daftarBelanja>) {
@@ -70,5 +77,6 @@ class adapterDaftar (private val daftarBelanja : MutableList<daftarBelanja>):
 
         var _btnEdit = itemView.findViewById<ImageButton>(R.id.btnEdit)
         var _btnHapus = itemView.findViewById<ImageButton>(R.id.btnHapus)
+        var _btnSelesai = itemView.findViewById<ImageButton>(R.id.btnSelesai)
     }
 }
