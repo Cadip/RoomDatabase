@@ -62,4 +62,5 @@
         android:layout_marginLeft="16dp"
         app:layout_constraintTop_toTopOf="@id/tvItem"
         app:layout_constraintLeft_toRightOf="@id/btnHapus"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
